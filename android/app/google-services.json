@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "732596084300",
+    "project_id": "qr-code-cba",
+    "storage_bucket": "qr-code-cba.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:732596084300:android:b691d5f2e21c4191351ee9",
+        "android_client_info": {
+          "package_name": "com.example.qr_code"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBcQeToqjm4BzMmMC3fWTTWTlLvC5NrqSc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
