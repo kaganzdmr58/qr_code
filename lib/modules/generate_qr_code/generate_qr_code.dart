@@ -1,9 +1,4 @@
-import 'dart:typed_data';
-import 'dart:ui' as ui;
-
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:qr_code/globals/tools.dart';
 import 'package:qr_code/globals/widgets/end_drawer.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -17,41 +12,14 @@ class GenerateQrCode extends StatefulWidget {
 
 class _GenerateQrCodeState extends State<GenerateQrCode> {
   final GlobalKey _globalKey = GlobalKey();
-  String selectedValue = 'Option 1';
+  var qrCodeText = "";
+  String selectedValue = 'Web';
+  TextEditingController _textEditingController = TextEditingController();
 
-  Future<void> _saveQRCode(BuildContext context) async {
-    try {
-      RenderRepaintBoundary boundary = _globalKey.currentContext!
-          .findRenderObject() as RenderRepaintBoundary;
-      ui.Image? image = await boundary.toImage(pixelRatio: 3.0);
-
-      if (image != null) {
-        ByteData? byteData =
-            await image.toByteData(format: ui.ImageByteFormat.png);
-
-        if (byteData != null) {
-          Uint8List pngBytes = byteData.buffer.asUint8List();
-          final result = await ImageGallerySaver.saveImage(
-              Uint8List.fromList(pngBytes),
-              quality: 60,
-              name: "deneme 11");
-          print(result);
-
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text('QR Kodu başarıyla indirildi.'),
-          ));
-        } else {
-          throw 'ByteData is null';
-        }
-      } else {
-        throw 'Image is null';
-      }
-    } catch (e) {
-      print(e);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('QR Kodunu indirirken bir hata oluştu.'),
-      ));
-    }
+  @override
+  void dispose() {
+    _textEditingController.dispose();
+    super.dispose();
   }
 
   @override
@@ -65,71 +33,106 @@ class _GenerateQrCodeState extends State<GenerateQrCode> {
       body: SafeArea(
         child: SizedBox(
           width: getScreenWidth(context),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  RepaintBoundary(
-                    key: _globalKey,
-                    child: QrImageView(
-                      backgroundColor: Colors.white,
-                      data: "Table qr code",
-                      size: 200,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    RepaintBoundary(
+                      key: _globalKey,
+                      child: QrImageView(
+                        backgroundColor: Colors.white,
+                        data: qrCodeText,
+                        size: 200,
+                      ),
+                    ),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          /*  Row(
+                            children: [
+                              IconButton(
+                                onPressed: () => _saveQRCode(context),
+                                icon: const Icon(
+                                  Icons.save,
+                                  size: 50,
+                                  color: Colors.blue,
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () => saveQRImage(),
+                                icon: const Icon(
+                                  Icons.share,
+                                  size: 50,
+                                  color: Colors.blue,
+                                ),
+                              ),
+                            ],
+                          ), */
+                          DropdownButton<String>(
+                            value: selectedValue,
+                            items: const [
+                              DropdownMenuItem<String>(
+                                value: 'Web',
+                                child: Text('Web'),
+                              ),
+                              DropdownMenuItem<String>(
+                                value: 'Text',
+                                child: Text('Text'),
+                              ),
+                              DropdownMenuItem<String>(
+                                value: 'Wifi',
+                                child: Text('Wifi'),
+                              ),
+                            ],
+                            onChanged: (value) {
+                              setState(() {
+                                selectedValue = value!;
+                              });
+                            },
+                          ),
+                        //  MyDropdownButton(),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    width: getScreenWidth(context),
+                    height: 200,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12.0),
+                      border: Border.all(color: Colors.black, width: 2.0),
+                    ),
+                    child: Center(
+                      child: TextField(
+                        controller: _textEditingController,
+                        style:
+                            const TextStyle(fontSize: 20, color: Colors.blue),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   ),
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Row(
-                          children: [
-                            IconButton(
-                              onPressed: () => _saveQRCode(context),
-                              icon: const Icon(
-                                Icons.save,
-                                size: 50,
-                                color: Colors.blue,
-                              ),
-                            ),
-                            IconButton(
-                              onPressed: () => _saveQRCode(context),
-                              icon: const Icon(
-                                Icons.share,
-                                size: 50,
-                                color: Colors.blue,
-                              ),
-                            ),
-                          ],
-                        ),
-                        DropdownButton<String>(
-                          value: selectedValue,
-                          items: const [
-                            DropdownMenuItem<String>(
-                              value: 'Option 1',
-                              child: Text('Option 1'),
-                            ),
-                            DropdownMenuItem<String>(
-                              value: 'Option 2',
-                              child: Text('Option 2'),
-                            ),
-                            DropdownMenuItem<String>(
-                              value: 'Option 3',
-                              child: Text('Option 3'),
-                            ),
-                          ],
-                          onChanged: (value) {
-                            setState(() {
-                              selectedValue = value!;
-                            });
-                          },
-                        ),
-                      ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10, top: 10),
+                  child: Center(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          qrCodeText = _textEditingController.text;
+                        });
+                      },
+                      child: Text("Qr Kod Oluştur".toUpperCase()),
                     ),
                   ),
-                ],
-              ),
-            ],
+                )
+              ],
+            ),
           ),
         ),
       ),
