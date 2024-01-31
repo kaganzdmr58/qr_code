@@ -12,7 +12,7 @@ class ScanScreen extends StatefulWidget {
 }
 
 class _ScanScreenState extends State<ScanScreen> {
-  final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+  final GlobalKey qrKey = GlobalKey(debugLabel: 'QR_${DateTime.now()}');
   var sendState = true;
 
   MobileScannerController cameraController = MobileScannerController();
@@ -35,6 +35,7 @@ class _ScanScreenState extends State<ScanScreen> {
         gotoReplace(context, AfterScanPage(capture: capture));
         sendState = false;
       }
+      cameraController.dispose();
     }
 
     return Scaffold(
