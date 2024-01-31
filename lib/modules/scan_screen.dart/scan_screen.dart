@@ -39,7 +39,7 @@ class _ScanScreenState extends State<ScanScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.blue,
         title: const Text('QR Code Scann'),
         actions: [],
       ),
@@ -55,43 +55,50 @@ class _ScanScreenState extends State<ScanScreen> {
             bottom: 100,
             right: 8,
             child: CircleAvatar(
-              backgroundColor: Colors.white,
-              child: IconButton(
-                color: Colors.black,
-                icon: ValueListenableBuilder(
-                  valueListenable: cameraController.torchState,
-                  builder: (context, state, child) {
-                    switch (state) {
-                      case TorchState.off:
-                        return const Icon(Icons.flash_off, color: Colors.black);
-                      case TorchState.on:
-                        return const Icon(Icons.flash_on, color: Colors.black);
-                    }
-                  },
+              radius: 32,
+              backgroundColor: Colors.blue,
+              child: Center(
+                child: IconButton(
+                  color: Colors.white,
+                  icon: ValueListenableBuilder(
+                    valueListenable: cameraController.torchState,
+                    builder: (context, state, child) {
+                      switch (state) {
+                        case TorchState.off:
+                          return const Icon(Icons.flash_off);
+                        case TorchState.on:
+                          return const Icon(Icons.flash_on);
+                      }
+                    },
+                  ),
+                  iconSize: 32.0,
+                  onPressed: () => cameraController.toggleTorch(),
                 ),
-                iconSize: 32.0,
-                onPressed: () => cameraController.toggleTorch(),
               ),
             ),
           ),
           Positioned(
-            bottom: 150,
+            bottom: 164,
             right: 8,
-            child: IconButton(
-              color: Colors.black,
-              icon: ValueListenableBuilder(
-                valueListenable: cameraController.cameraFacingState,
-                builder: (context, state, child) {
-                  switch (state) {
-                    case CameraFacing.front:
-                      return const Icon(Icons.camera_front);
-                    case CameraFacing.back:
-                      return const Icon(Icons.camera_rear);
-                  }
-                },
+            child: CircleAvatar(
+              radius: 32,
+              backgroundColor: Colors.blue,
+              child: IconButton(
+                color: Colors.white,
+                icon: ValueListenableBuilder(
+                  valueListenable: cameraController.cameraFacingState,
+                  builder: (context, state, child) {
+                    switch (state) {
+                      case CameraFacing.front:
+                        return const Icon(Icons.camera_front);
+                      case CameraFacing.back:
+                        return const Icon(Icons.camera_rear);
+                    }
+                  },
+                ),
+                iconSize: 32.0,
+                onPressed: () => cameraController.switchCamera(),
               ),
-              iconSize: 32.0,
-              onPressed: () => cameraController.switchCamera(),
             ),
           ),
         ],

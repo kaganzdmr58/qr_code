@@ -13,10 +13,8 @@ class AfterScanPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: const Text('QR Code Info'),
-        // actions: [],
-        
+        backgroundColor: Colors.blue,
+        title: const Text('QR Code Info'),        
       ),
       endDrawer: const EndDrawer(),
       body: SafeArea(
@@ -104,8 +102,8 @@ List<String>? connectWifi(String qrCode) {
   if (qrCode == "") return null;
   List<String> qrCodeSplit = qrCode.split(';');
   String ssid = qrCodeSplit[1].split(':')[1];
-  String _password = qrCodeSplit[2].split(':')[1];
-  return [ssid, _password];
+  String pwd = qrCodeSplit[2].split(':')[1];
+  return [ssid, pwd];
 }
 
 String getValueWithFormat(Barcode barcode) {

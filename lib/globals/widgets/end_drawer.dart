@@ -9,6 +9,7 @@ class EndDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      backgroundColor: Colors.blue,
       child: ListView(
         children: [
           const DrawerHeader(
@@ -17,7 +18,7 @@ class EndDrawer extends StatelessWidget {
             ),
             child: Center(
               child: Text(
-                'QR Code Scann, Genrate and Connnect Web',
+                'Scann & Genrate \nQR Code',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
@@ -26,20 +27,29 @@ class EndDrawer extends StatelessWidget {
               ),
             ),
           ),
-          ListTile(
-            leading: const Icon(Icons.qr_code),
-            title: const Text('Qr Code Generate'),
-            onTap: () {
-              gotoReplace(context, const GenerateQrCode());
-            },
+          Container(
+            color: Colors.white,
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                ListTile(
+                  leading: const Icon(Icons.qr_code),
+                  title: const Text('Qr Code Generate'),
+                  onTap: () {
+                    gotoReplace(context, const GenerateQrCode());
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.qr_code_scanner_sharp),
+                  title: const Text('Scann QrCode & Barcode'),
+                  onTap: () {
+                    gotoReplace(context, const ScanScreen());
+                  },
+                ),
+              ],
+            ),
           ),
-          ListTile(
-            leading: const Icon(Icons.qr_code_scanner_sharp),
-            title: const Text('Scann Barcode'),
-            onTap: () {
-              gotoReplace(context, const ScanScreen());
-            },
-          ),
+
           /* ListTile(
             leading: Icon(Icons.settings),
             title: Text('Settings'),
