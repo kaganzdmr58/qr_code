@@ -6,8 +6,8 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
-        android:label="QR Code"
-        android:name="QrCode"
+        android:label="QR ve Barcode Okuyucu"
+        android:name="${applicationName}"
         android:requestLegacyExternalStorage="true"
         android:icon="@mipmap/icon">
         <activity

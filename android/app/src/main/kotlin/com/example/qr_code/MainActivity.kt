@@ -1,4 +1,4 @@
-package com.example.qr_code
+package com.cbatechstudio.internalapp.qr_code
 
 import io.flutter.embedding.android.FlutterActivity
 
